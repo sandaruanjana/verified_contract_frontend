@@ -37,16 +37,12 @@
             <TransitionGroup name="list-complete" tag="div">
               <div class="list-view-item">
                 <div class="list-view-item-inner">
-                  <VAvatar
-                    :picture="
-                      contractor.profilePicture === null
-                        ? '/@src/assets/image/profile.png'
-                        : basic_url +
-                          '/api/uploads/profile_picture/' +
-                          contractor.profilePicture
-                    "
-                    size="large"
-                  />
+                  <VAvatar :picture="contractor.profilePicture === null
+    ? '/@src/assets/image/profile.png'
+    : basic_url +
+    '/api/uploads/profile_picture/' +
+    contractor.profilePicture
+    " size="large" />
                   <div class="meta-left">
                     <h3>{{ contractor.name }}</h3>
                   </div>
@@ -71,26 +67,15 @@
           <form @submit.prevent="handleCreateProject">
             <div class="columns is-multiline">
               <div class="column is-6">
-                <Field v-slot="{ field, errorMessage }" name="project_name"
-                  ><V-Field>
+                <Field v-slot="{ field, errorMessage }" name="project_name"><V-Field>
                     <label>Project Name</label>
-                    <V-Control
-                      icon="feather:briefcase"
-                      :has-error="Boolean(errorMessage)"
-                    >
-                      <input
-                        v-bind="field"
-                        type="text"
-                        class="input"
-                        placeholder=""
-                        autocomplete="given-name"
-                      />
+                    <V-Control icon="feather:briefcase" :has-error="Boolean(errorMessage)">
+                      <input v-bind="field" type="text" class="input" placeholder="" autocomplete="given-name" />
                       <p v-if="errorMessage" class="help is-danger">
                         {{ errorMessage }}
                       </p>
                     </V-Control>
-                  </V-Field></Field
-                >
+                  </V-Field></Field>
               </div>
               <div class="column is-6">
                 <v-date-picker v-model="date" color="green" trim-weeks>
@@ -98,13 +83,8 @@
                     <V-Field>
                       <label>Prefered Date</label>
                       <V-Control icon="feather:calendar">
-                        <input
-                          class="input"
-                          type="text"
-                          placeholder="Select a date"
-                          :value="inputValue"
-                          v-on="inputEvents"
-                        />
+                        <input class="input" type="text" placeholder="Select a date" :value="inputValue"
+                          v-on="inputEvents" />
                       </V-Control>
                     </V-Field>
                   </template>
@@ -115,14 +95,8 @@
                   <V-Field>
                     <label>Address Line 1</label>
                     <V-Control icon="feather:map-pin" :has-error="Boolean(errorMessage)">
-                      <input
-                        v-bind="field"
-                        type="text"
-                        class="input"
-                        placeholder=""
-                        autocomplete="address-line1"
-                        inputmode="text"
-                      />
+                      <input v-bind="field" type="text" class="input" placeholder="" autocomplete="address-line1"
+                        inputmode="text" />
                       <p v-if="errorMessage" class="help is-danger">
                         {{ errorMessage }}
                       </p>
@@ -134,18 +108,9 @@
                 <Field v-slot="{ field, errorMessage }" name="address_line_2">
                   <V-Field>
                     <label>Address Line 2</label>
-                    <V-Control
-                      icon="dashicons:location-alt"
-                      :has-error="Boolean(errorMessage)"
-                    >
-                      <input
-                        v-bind="field"
-                        type="text"
-                        class="input"
-                        placeholder=""
-                        autocomplete="address-line2"
-                        inputmode="text"
-                      />
+                    <V-Control icon="dashicons:location-alt" :has-error="Boolean(errorMessage)">
+                      <input v-bind="field" type="text" class="input" placeholder="" autocomplete="address-line2"
+                        inputmode="text" />
                       <p v-if="errorMessage" class="help is-danger">
                         {{ errorMessage }}
                       </p>
@@ -157,18 +122,9 @@
                 <Field v-slot="{ field, errorMessage }" name="project_nature">
                   <V-Field>
                     <label>Project Nature</label>
-                    <V-Control
-                      icon="feather:file-text"
-                      :has-error="Boolean(errorMessage)"
-                    >
-                      <input
-                        v-bind="field"
-                        type="text"
-                        class="input"
-                        placeholder=""
-                        autocomplete="text"
-                        inputmode="text"
-                      />
+                    <V-Control icon="feather:file-text" :has-error="Boolean(errorMessage)">
+                      <input v-bind="field" type="text" class="input" placeholder="" autocomplete="text"
+                        inputmode="text" />
                       <p v-if="errorMessage" class="help is-danger">
                         {{ errorMessage }}
                       </p>
@@ -180,17 +136,8 @@
                 <Field v-slot="{ field, errorMessage }" name="zip_code">
                   <V-Field>
                     <label>Zip Code</label>
-                    <V-Control
-                      icon="bx:current-location"
-                      :has-error="Boolean(errorMessage)"
-                    >
-                      <input
-                        v-bind="field"
-                        type="number"
-                        class="input"
-                        placeholder=""
-                        autocomplete="postal-code"
-                      />
+                    <V-Control icon="bx:current-location" :has-error="Boolean(errorMessage)">
+                      <input v-bind="field" type="number" class="input" placeholder="" autocomplete="postal-code" />
                       <p v-if="errorMessage" class="help is-danger">
                         {{ errorMessage }}
                       </p>
@@ -199,23 +146,33 @@
                 </Field>
               </div>
               <div class="column is-6">
-                <Field v-slot="{ field, errorMessage }" name="category">
+
+
+                <Field v-slot="{ field, errorMessage }" name="selectedCategory">
                   <V-Field>
+                    <!-- v-model="selectedCategory"  -->
                     <label>Category</label>
-                    <V-Control icon="bx:category" :has-error="Boolean(errorMessage)">
-                      <input
-                        v-bind="field"
-                        type="text"
-                        class="input"
-                        placeholder=""
-                        autocomplete="given-name"
-                      />
+                    <V-Control :has-error="Boolean(errorMessage)">
+                      <Multiselect v-model="selectedCategory" :options="categoryOptions" label="name" track-by="name"
+                        placeholder="Category" :searchable="true" />
                       <p v-if="errorMessage" class="help is-danger">
                         {{ errorMessage }}
                       </p>
                     </V-Control>
                   </V-Field>
                 </Field>
+
+                <!-- <Field v-slot="{ field, errorMessage }" name="category">
+                  <V-Field>
+                    <label>Category</label>
+                    <V-Control icon="bx:category" :has-error="Boolean(errorMessage)">
+                      <input v-bind="field" type="text" class="input" placeholder="" autocomplete="given-name" />
+                      <p v-if="errorMessage" class="help is-danger">
+                        {{ errorMessage }}
+                      </p>
+                    </V-Control>
+                  </V-Field>
+                </Field> -->
               </div>
               <!-- <div class="column is-12-tablet is-6-desktop">
                 <div class="mt-4">
@@ -273,15 +230,9 @@
                   <V-Field>
                     <label>Special Instructions</label>
                     <V-Control :has-error="Boolean(errorMessage)">
-                      <textarea
-                        v-bind="field"
-                        class="textarea"
-                        rows="4"
-                        placeholder="Tell us about any details you'd like us to know..."
-                        autocomplete="off"
-                        autocapitalize="off"
-                        spellcheck="true"
-                      ></textarea>
+                      <textarea v-bind="field" class="textarea" rows="4"
+                        placeholder="Tell us about any details you'd like us to know..." autocomplete="off"
+                        autocapitalize="off" spellcheck="true"></textarea>
                       <p v-if="errorMessage" class="help is-danger">
                         {{ errorMessage }}
                       </p>
@@ -294,14 +245,8 @@
                   <VControl>
                     <div class="file">
                       <label class="file-label">
-                        <input
-                          :disabled="file_list.length == 5"
-                          accept="image/*"
-                          class="file-input"
-                          type="file"
-                          name="resume"
-                          @change="onEventFilePicked"
-                        />
+                        <input :disabled="file_list.length == 5" accept="image/*" class="file-input" type="file"
+                          name="resume" @change="onEventFilePicked" />
                         <span class="file-cta">
                           <span class="file-icon">
                             <i class="fas fa-cloud-upload-alt"></i>
@@ -323,30 +268,16 @@
                   <V-Field>
                     <label>Description</label>
                     <V-Control>
-                      <textarea
-                        class="textarea"
-                        rows="4"
-                        placeholder="Write about any details..."
-                        autocomplete="off"
-                        autocapitalize="off"
-                        spellcheck="true"
-                        @change="clearImageDescription"
-                        @keypress="onKeyPress($event, index)"
-                      ></textarea>
+                      <textarea class="textarea" rows="4" placeholder="Write about any details..." autocomplete="off"
+                        autocapitalize="off" spellcheck="true" @change="clearImageDescription"
+                        @keypress="onKeyPress($event, index)"></textarea>
                     </V-Control>
                   </V-Field>
                 </div>
-                <VIconButton
-                  color="danger"
-                  light
-                  raised
-                  circle
-                  icon="feather:x"
-                  @click="removeImage(index)"
-                />
+                <VIconButton color="danger" light raised circle icon="feather:x" @click="removeImage(index)" />
               </div>
             </div>
-            <VCheckbox
+            <!-- <VCheckbox
               v-model="options"
               value="true"
               label="Action"
@@ -367,7 +298,7 @@
                 label="Request Quotation"
                 color="primary"
               />
-            </VControl>
+            </VControl> -->
             <br />
             <div class="">
               <div class="buttons">
@@ -440,6 +371,25 @@ const selectedServiceHomeRemodels = ref<any>([])
 const selectedEducations = ref<any>([])
 const selectedArts = ref<any>([])
 
+const selectedCategory = ref<any>([])
+const categoryOptions = ref<any>([])
+
+categoryOptions.value.push("Construction")
+categoryOptions.value.push("Commercial Remodel")
+categoryOptions.value.push("Plumbing")
+categoryOptions.value.push("Painter")
+categoryOptions.value.push("Roofing")
+categoryOptions.value.push("Electrical")
+categoryOptions.value.push("Lawn Care/ Landscaping")
+categoryOptions.value.push("Pool Care")
+categoryOptions.value.push("Appliance Repair")
+categoryOptions.value.push("Woodworker")
+categoryOptions.value.push("Furniture Repair/Restoration")
+
+selectedCategory.value = categoryOptions.value[0]
+
+
+
 const fetchSkills = async () => {
   const serviceHomeRemodels = await skillService.getAllByType('Service-Home Remodel')
 
@@ -496,7 +446,7 @@ const schema = yup.object({
     .string()
     .required('Please enter a zip code')
     .matches(/^\d{5}$/, 'Please enter a valid zip code'),
-  category: yup.string().required('Please enter a category'),
+  // category: yup.string().required('Please enter a category'),
 })
 
 const { resetForm, handleSubmit } = useForm({
@@ -587,7 +537,7 @@ const handleCreateProject = handleSubmit(async (data: any) => {
       zipCode: data.zip_code,
       longitude: zipCodeLongitude,
       latitude: zipCodeLatitude,
-      category: data.category,
+      category: selectedCategory.value,
       categoryOneId:
         selectedServiceHomeRemodels.value.length === 0
           ? null
@@ -708,6 +658,7 @@ const handleCreateProject = handleSubmit(async (data: any) => {
       .form-body {
         .field {
           .control {
+
             .input,
             .textarea {
               &:focus {
@@ -775,7 +726,7 @@ const handleCreateProject = handleSubmit(async (data: any) => {
           line-height: 1;
         }
 
-        > span:not(.tag) {
+        >span:not(.tag) {
           font-size: 0.9rem;
           color: var(--light-text);
 
@@ -813,7 +764,7 @@ const handleCreateProject = handleSubmit(async (data: any) => {
             text-align: center;
             color: var(--light-text);
 
-            > span {
+            >span {
               font-family: var(--font);
 
               &:first-child {
@@ -854,7 +805,7 @@ const handleCreateProject = handleSubmit(async (data: any) => {
           align-items: center;
           min-width: 145px;
 
-          > span {
+          >span {
             font-family: var(--font);
             font-size: 0.9rem;
             color: var(--light-text);
@@ -933,7 +884,7 @@ const handleCreateProject = handleSubmit(async (data: any) => {
             margin: 10px 0 0;
             justify-content: center;
 
-            > span {
+            >span {
               display: none;
             }
           }
@@ -987,7 +938,7 @@ const handleCreateProject = handleSubmit(async (data: any) => {
             margin: 10px 0 0;
             justify-content: center;
 
-            > span {
+            >span {
               display: none;
             }
           }

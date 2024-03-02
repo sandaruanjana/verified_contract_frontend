@@ -17,7 +17,7 @@
     <div class="dashboard-body">
       <div class="columns is-multiline">
         <!--Card-->
-        <div class="column is-7">
+        <!-- <div class="column is-7">
           <div class="dashboard-card">
             <div class="card-head">
               <h3 class="dark-inverted">Projects Completion</h3>
@@ -32,44 +32,44 @@
             >
             </ApexChart>
           </div>
-        </div>
+        </div> -->
 
-        <!--Card-->
-        <div class="column is-5 personal-dashboard-v2">
-          <div class="dashboard-card has-margin-bottom">
-            <div class="card-head">
-              <h3 class="dark-inverted">Active Projects</h3>
-              <router-link
-                :to="{ name: 'customer-project-status' }"
-                class="action-link"
-                tabindex="0"
-                >View All</router-link
-              >
-            </div>
-            <div class="active-projects">
-              <!--Project-->
-              <VBlock
-                v-for="project in projects"
-                :title="project.name"
-                :key="project.id"
-                center
-              >
-                <template #icon>
-                  <VAvatar
-                    initials="P"
-                    :color="getColorByKey(randomInteger(0, 3))"
-                    size="medium"
-                    squared
-                  />
-                </template>
-                <template #action>
-                  <VAvatarStack :avatars="avatarStack1" size="small" />
-                  <ProjectWidgetDropdown />
-                </template>
-              </VBlock>
+        <template v-if="projects.length === 0">
+          <p
+            style="background-color: #CEE28B; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-size: 16px; color: #555;">
+
+            No active projects right now.</p>
+        </template>
+
+        <template v-else>
+          <div class="column is-5 personal-dashboard-v2">
+            <div class="dashboard-card has-margin-bottom">
+              <div class="card-head">
+                <h3 class="dark-inverted">Active Projects</h3>
+                <!-- <router-link :to="{ name: 'customer-project-status' }" class="action-link" tabindex="0">View
+                All</router-link> -->
+              </div>
+              <div class="active-projects">
+                <!--Project-->
+                <VBlock v-for="project in projects" :title="project.name" :key="project.id" center>
+
+                  <template #icon>
+                    <VAvatar initials="P" :color="getColorByKey(randomInteger(0, 3))" size="medium" squared />
+                  </template>
+                  <VTag rounded>{{ project.status }}</VTag>
+
+                  <!-- <template #action>
+                    <VAvatarStack :avatars="avatarStack1" size="small" />
+                    <ProjectWidgetDropdown />
+                  </template> -->
+                </VBlock>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
+
+        <!--Card-->
+
       </div>
     </div>
   </div>
@@ -192,7 +192,7 @@ onMounted(async () => {
 
       font-family: var(--font);
 
-      > h4,
+      >h4,
       .ApexCharts-title-text {
         font-family: var(--font-alt);
         font-size: 1rem;
@@ -419,6 +419,7 @@ onMounted(async () => {
 
     .user-meta {
       padding: 0 3rem;
+
       border-right: 1px solid var(--fade-grey-dark-3) h3 {
         max-width: 180px;
       }

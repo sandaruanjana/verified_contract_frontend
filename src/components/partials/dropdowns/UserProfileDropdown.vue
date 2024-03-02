@@ -32,13 +32,8 @@ async function logout() {
 <template>
   <VDropdown right spaced class="user-dropdown profile-dropdown">
     <template #button="{ toggle }">
-      <a
-        tabindex="0"
-        class="is-trigger dropdown-trigger"
-        aria-haspopup="true"
-        @keydown.space.prevent="toggle"
-        @click="toggle"
-      >
+      <a tabindex="0" class="is-trigger dropdown-trigger" aria-haspopup="true" @keydown.space.prevent="toggle"
+        @click="toggle">
         <VAvatar :picture="profile_image" />
       </a>
     </template>
@@ -53,12 +48,7 @@ async function logout() {
         </div>
       </div>
 
-      <a
-        v-if="position === 'CUSTOMER'"
-        href="/customer/profile"
-        role="menuitem"
-        class="dropdown-item is-media"
-      >
+      <a v-if="position === 'CUSTOMER'" href="/customer/profile" role="menuitem" class="dropdown-item is-media">
         <div class="icon">
           <i aria-hidden="true" class="lnil lnil-user-alt"></i>
         </div>
@@ -67,12 +57,7 @@ async function logout() {
           <span>View your profile</span>
         </div>
       </a>
-      <a
-        v-if="position === 'CONTRACTOR'"
-        href="/contractor/profile"
-        role="menuitem"
-        class="dropdown-item is-media"
-      >
+      <a v-if="position === 'CONTRACTOR'" href="/contractor/profile" role="menuitem" class="dropdown-item is-media">
         <div class="icon">
           <i aria-hidden="true" class="lnil lnil-user-alt"></i>
         </div>
@@ -84,12 +69,8 @@ async function logout() {
 
       <hr class="dropdown-divider" />
 
-      <a
-        v-if="position === 'CONTRACTOR'"
-        href="/contractor/profile-edit"
-        role="menuitem"
-        class="dropdown-item is-media"
-      >
+      <a v-if="position === 'CONTRACTOR'" href="/contractor/profile-edit" role="menuitem"
+        class="dropdown-item is-media">
         <div class="icon">
           <i aria-hidden="true" class="lnil lnil-cog"></i>
         </div>
@@ -99,33 +80,21 @@ async function logout() {
         </div>
       </a>
 
-      <a
-        v-if="position === 'CONTRACTOR'"
-        href="/contractor/payment"
-        role="menuitem"
-        class="dropdown-item is-media"
-      >
-        <div class="icon">
+      <a v-if="position === 'CONTRACTOR'" href="/contractor/payment" role="menuitem" class="dropdown-item is-media">
+        <!-- <div class="icon">
           <i class="lnir lnir-dollar" aria-hidden="true"></i>
         </div>
         <div class="meta">
           <span>Payment</span>
           <span>Pay the subscription</span>
-        </div>
+        </div> -->
       </a>
 
-      <hr class="dropdown-divider" />
+      <!-- <hr class="dropdown-divider" /> -->
 
       <div class="dropdown-item is-button">
-        <VButton
-          class="logout-button"
-          icon="feather:log-out"
-          color="primary"
-          role="menuitem"
-          raised
-          fullwidth
-          @click="logout"
-        >
+        <VButton class="logout-button" icon="feather:log-out" color="primary" role="menuitem" raised fullwidth
+          @click="logout">
           Logout
         </VButton>
       </div>

@@ -1,18 +1,7 @@
 <template>
-  <VModal
-    :open="isOpen"
-    title="Contractors Profile"
-    size="big"
-    actions="center"
-    @close="close"
-  >
+  <VModal :open="isOpen" title="Contractors Profile" size="big" actions="center" @close="close">
     <template #content>
-      <VLoader
-        v-if="is_contractor_loading"
-        card="rounded"
-        size="small"
-        :active="is_contractor_loading"
-      >
+      <VLoader v-if="is_contractor_loading" card="rounded" size="small" :active="is_contractor_loading">
         <div class="list-view list-view-v1">
           <div class="list-view-inner">
             <TransitionGroup name="list-complete" tag="div">
@@ -38,16 +27,12 @@
           <TransitionGroup name="list-complete" tag="div">
             <div class="list-view-item">
               <div class="list-view-item-inner">
-                <VAvatar
-                  :picture="
-                    contractor.profilePicture === null
-                      ? '/@src/assets/image/profile.png'
-                      : basic_url +
-                        '/api/uploads/profile_picture/' +
-                        contractor.profilePicture
-                  "
-                  size="large"
-                />
+                <VAvatar :picture="contractor.profilePicture === null
+    ? '/@src/assets/image/profile.png'
+    : basic_url +
+    '/api/uploads/profile_picture/' +
+    contractor.profilePicture
+    " size="large" />
                 <div class="meta-left">
                   <p>Name : {{ contractor.name }}</p>
                   <p>
@@ -72,12 +57,7 @@
 
       <h2 v-if="!is_gallery_loading" class="title is-4">Gallery</h2>
 
-      <VLoader
-        v-if="is_gallery_loading"
-        card="rounded"
-        size="small"
-        :active="is_gallery_loading"
-      >
+      <VLoader v-if="is_gallery_loading" card="rounded" size="small" :active="is_gallery_loading">
         <div class="list-view list-view-v1">
           <div class="list-view-inner">
             <TransitionGroup name="list-complete" tag="div">
@@ -103,10 +83,7 @@
           <div v-if="!is_gallery_loading && userImages.length === 0">
             <VMessage color="danger">There are no photos this contractor</VMessage>
           </div>
-          <div
-            v-if="!is_gallery_loading && userImages.length > 0"
-            class="detail-photo-grid"
-          >
+          <div v-if="!is_gallery_loading && userImages.length > 0" class="detail-photo-grid">
             <div v-for="image in userImages" :key="image.id">
               <img :src="basic_url + '/api/uploads/image/' + image.name" alt="" />
             </div>
@@ -116,12 +93,7 @@
 
       <br />
 
-      <VLoader
-        v-if="is_feedback_loading"
-        card="rounded"
-        size="small"
-        :active="is_feedback_loading"
-      >
+      <!-- <VLoader v-if="is_feedback_loading" card="rounded" size="small" :active="is_feedback_loading">
         <div class="list-view list-view-v1">
           <div class="list-view-inner">
             <TransitionGroup name="list-complete" tag="div">
@@ -140,27 +112,16 @@
             </TransitionGroup>
           </div>
         </div>
-      </VLoader>
+      </VLoader> -->
 
-      <div v-if="!is_feedback_loading">
+      <!-- <div v-if="!is_feedback_loading">
         <h2 class="title is-4 is-narrow is-thin">Contractor Rating</h2>
-        <VueStarRating
-          v-model:rating="rating"
-          :increment="0.1"
-          :read-only="true"
-          :show-rating="true"
-          :star-size="30"
-        />
+        <VueStarRating v-model:rating="rating" :increment="0.1" :read-only="true" :show-rating="true" :star-size="30" />
       </div>
 
-      <br />
+      <br /> -->
 
-      <VLoader
-        v-if="is_feedback_loading"
-        card="rounded"
-        size="small"
-        :active="is_feedback_loading"
-      >
+      <!-- <VLoader v-if="is_feedback_loading" card="rounded" size="small" :active="is_feedback_loading">
         <div class="list-view list-view-v1">
           <div class="list-view-inner">
             <TransitionGroup name="list-complete" tag="div">
@@ -179,16 +140,12 @@
             </TransitionGroup>
           </div>
         </div>
-      </VLoader>
-
+      </VLoader> -->
+      <!-- 
       <div v-if="!is_feedback_loading">
         <h2 class="title is-4 is-narrow is-thin">Feedback</h2>
         <br />
-        <div
-          v-for="feed in feedback?.data"
-          :key="feed.Name"
-          class="list-view list-view-v1"
-        >
+        <div v-for="feed in feedback?.data" :key="feed.Name" class="list-view list-view-v1">
           <div v-if="feed.Rate !== 0">
             <div class="list-view-inner">
               <TransitionGroup name="list-complete" tag="div">
@@ -197,13 +154,8 @@
                     <VAvatar :picture="contractor?.data[0].Image" size="large" />
                     <div class="meta-left">
                       <p>{{ feed?.Name }}</p>
-                      <VueStarRating
-                        v-model:rating="feed.Rate"
-                        :increment="0.1"
-                        :read-only="true"
-                        :show-rating="true"
-                        :star-size="15"
-                      />
+                      <VueStarRating v-model:rating="feed.Rate" :increment="0.1" :read-only="true" :show-rating="true"
+                        :star-size="15" />
                       <p>{{ feed.Comment }}</p>
                     </div>
                   </div>
@@ -212,7 +164,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </template>
   </VModal>
 </template>
@@ -312,7 +264,7 @@ const fetchFeedback = async () => {
 }
 
 onMounted(async () => {
-  await Promise.all([fetchContractor(), fetchGallery(), fetchFeedback()])
+  await Promise.all([fetchContractor(), fetchGallery()])
 })
 
 const close = () => {
@@ -398,6 +350,7 @@ const close = () => {
       .form-body {
         .field {
           .control {
+
             .input,
             .textarea {
               &:focus {
@@ -465,7 +418,7 @@ const close = () => {
           line-height: 1;
         }
 
-        > span:not(.tag) {
+        >span:not(.tag) {
           font-size: 0.9rem;
           color: var(--light-text);
 
@@ -503,7 +456,7 @@ const close = () => {
             text-align: center;
             color: var(--light-text);
 
-            > span {
+            >span {
               font-family: var(--font);
 
               &:first-child {
@@ -544,7 +497,7 @@ const close = () => {
           align-items: center;
           min-width: 145px;
 
-          > span {
+          >span {
             font-family: var(--font);
             font-size: 0.9rem;
             color: var(--light-text);
@@ -623,7 +576,7 @@ const close = () => {
             margin: 10px 0 0;
             justify-content: center;
 
-            > span {
+            >span {
               display: none;
             }
           }
@@ -677,7 +630,7 @@ const close = () => {
             margin: 10px 0 0;
             justify-content: center;
 
-            > span {
+            >span {
               display: none;
             }
           }
@@ -693,6 +646,7 @@ const close = () => {
     }
   }
 }
+
 .detail-photo-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

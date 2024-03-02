@@ -58,10 +58,10 @@ onMounted(async () => {
         <h3>Welcome back, {{ username }}</h3>
         <p>We're very happy to see you again on your personal dashboard.</p>
       </div>
-      <div class="end">
+      <!-- <div class="end">
         <VButton dark="3">View Reports</VButton>
         <VButton color="primary" elevated>Manage Profile</VButton>
-      </div>
+      </div> -->
     </div>
 
     <!--Body-->
@@ -76,18 +76,11 @@ onMounted(async () => {
               <div class="quick-stats-inner">
                 <!--Stat-->
                 <div class="quick-stat">
-                  <VBlock
-                    @click="
-                      $router.push({
-                        name: 'contractor-all-public-project',
-                      })
-                    "
-                    title="Public Projects"
-                    :subtitle="PublicProjectsCount"
-                    center
-                    m-responsive
-                    t-responsive
-                  >
+                  <VBlock @click="
+        $router.push({
+          name: 'contractor-all-public-project',
+        })
+        " title="Public Projects" :subtitle="PublicProjectsCount" center m-responsive t-responsive>
                     <template #icon>
                       <VIconBox color="purple" rounded>
                         <i aria-hidden="true" class="lnil lnil-folder"></i>
@@ -98,18 +91,12 @@ onMounted(async () => {
 
                 <!--Stat-->
                 <div class="quick-stat">
-                  <VBlock
-                    @click="
-                      $router.push({
-                        name: 'contractor-my-project',
-                      })
-                    "
-                    title="My Projects"
-                    :subtitle="MyProjectsCount"
-                    center
-                    m-responsive
-                    t-responsive
-                  >
+                  <VBlock @click="
+        $router.push({
+          name: 'contractor-my-project',
+        })
+        " title="My Projects" :subtitle="MyProjectsCount" center m-responsive t-responsive>
+
                     <template #icon>
                       <VIconBox color="orange" rounded>
                         <i aria-hidden="true" class="lnil lnil-pulse"></i>
@@ -120,18 +107,12 @@ onMounted(async () => {
 
                 <!--Stat-->
                 <div class="quick-stat">
-                  <VBlock
-                    @click="
-                      $router.push({
-                        name: 'contractor-gallery',
-                      })
-                    "
-                    title="Gallery"
-                    :subtitle="GalleryCount"
-                    center
-                    m-responsive
-                    t-responsive
-                  >
+                  <VBlock @click="
+        $router.push({
+          name: 'contractor-gallery',
+        })
+        " title="Gallery" :subtitle="GalleryCount" center m-responsive t-responsive>
+
                     <template #icon>
                       <VIconBox color="green" rounded>
                         <i aria-hidden="true" class="lnil lnil-gallery"></i>
@@ -142,17 +123,12 @@ onMounted(async () => {
 
                 <!--Stat-->
                 <div class="quick-stat">
-                  <VBlock
-                    @click="
-                      $router.push({
-                        name: 'contractor-add-progress',
-                      })
-                    "
-                    title="Add Progress"
-                    center
-                    m-responsive
-                    t-responsive
-                  >
+                  <VBlock @click="
+        $router.push({
+          name: 'contractor-add-progress',
+        })
+        " title="Add Progress" center m-responsive t-responsive>
+
                     <template #icon>
                       <VIconBox color="info" rounded>
                         <i aria-hidden="true" class="lnil lnil-add-files"></i>
@@ -166,7 +142,7 @@ onMounted(async () => {
         </div>
 
         <!--Card-->
-        <div class="column is-6">
+        <!-- <div class="column is-6">
           <div class="dashboard-card">
             <ApexChart
               :height="customersOptions.chart.height"
@@ -176,10 +152,10 @@ onMounted(async () => {
             >
             </ApexChart>
           </div>
-        </div>
+        </div> -->
 
         <!--Card-->
-        <div class="column is-4">
+        <!-- <div class="column is-4">
           <div class="dashboard-card is-upgrade">
             <i aria-hidden="true" class="lnil lnil-crown-alt-1"></i>
             <div class="cta-content">
@@ -188,25 +164,21 @@ onMounted(async () => {
               <a class="link inverted-text">Learn More</a>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!--Card-->
-        <div class="column is-4">
+        <!-- <div class="column is-4">
           <div class="dashboard-card is-gauge">
             <div class="people">
               <VAvatar picture="/demo/avatars/21.jpg" />
               <VAvatar initials="%" color="h-purple" />
               <VAvatar picture="/demo/avatars/39.jpg" />
             </div>
-            <ApexChart
-              :height="teamGaugeOptions.chart.height"
-              :type="teamGaugeOptions.chart.type"
-              :series="teamGaugeOptions.series"
-              :options="teamGaugeOptions"
-            >
+            <ApexChart :height="teamGaugeOptions.chart.height" :type="teamGaugeOptions.chart.type"
+              :series="teamGaugeOptions.series" :options="teamGaugeOptions">
             </ApexChart>
           </div>
-        </div>
+        </div> -->
 
         <!--Card-->
         <!--        <div class="column is-4">-->
@@ -269,7 +241,7 @@ onMounted(async () => {
 
       font-family: var(--font);
 
-      > h4,
+      >h4,
       .ApexCharts-title-text {
         font-family: var(--font-alt);
         font-size: 1rem;
