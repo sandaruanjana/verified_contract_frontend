@@ -12,13 +12,16 @@
 
       <VPlaceholderSection title="Are you sure!" subtitle="You won't be able to revert this!" />
     </template>
+
     <template #action>
-      <VButton color="danger" raised @click="; (rejectModalOpen = false), (rejectReasonModalOpen = true)">Yes, Reject it!
+      <VButton color="danger" raised @click="; (rejectModalOpen = false), (rejectReasonModalOpen = true)">Yes, Reject
+        it!
       </VButton>
     </template>
   </VModal>
 
   <VModal :open="acceptActionOpen" title="" size="small" actions="center" @close="acceptActionOpen = false">
+
     <template #content>
       <div class="has-text-centered">
         <i class="iconify" style="font-size: 60px" data-icon="feather:alert-circle"></i>
@@ -26,6 +29,7 @@
 
       <VPlaceholderSection title="Are you sure!" subtitle="You won't be able to revert this!" />
     </template>
+
     <template #action>
       <VButton color="danger" :loading="isLoadingProjectStatusUpdateRequest" raised @click="acceptProject">Yes, accept!
       </VButton>
@@ -34,6 +38,7 @@
 
   <VModal :open="rejectReasonModalOpen" title="Enter your reason" size="small" actions="center"
     @close="; (rejectReasonModalOpen = false), (rejectReason = '')">
+
     <template #content>
       <VField>
         <VControl>
@@ -41,6 +46,7 @@
         </VControl>
       </VField>
     </template>
+
     <template #action>
       <VButton color="danger" :loading="isLoadingProjectRequestReject" raised @click="rejectProject">Submit
       </VButton>
@@ -54,6 +60,7 @@
       Here we retrieve the internal wrapperState.
       Note that we can not destructure it
     -->
+
     <template #default="wrapperState">
       <!--Table Pagination-->
       <VFlexPagination v-model:current-page="wrapperState.page" :item-per-page="wrapperState.limit"
@@ -63,7 +70,8 @@
           <VFlex class="mr-4">
             <VField>
               <VControl icon="feather:search">
-                <input v-model="wrapperState.searchInput" type="text" class="input is-rounded" placeholder="Filter..." />
+                <input v-model="wrapperState.searchInput" type="text" class="input is-rounded"
+                  placeholder="Filter..." />
               </VControl>
             </VField>
           </VFlex>
@@ -89,6 +97,7 @@
       </VFlexPagination>
 
       <VFlexTable rounded clickable>
+
         <template #body>
           <!--
             The wrapperState.loading will be update
@@ -128,16 +137,18 @@
         </template>
 
         <!-- This is the body cell slot -->
+
         <template #body-cell="{ row, column }">
           <template v-if="column.key === 'address'">
             <span :class="[
-              column.cellClass,
-              column.inverted && 'dark-inverted',
-              !column.inverted && (column.bold ? 'dark-text' : 'light-text'),
-            ]" :title="row.AddressLine1">
+    column.cellClass,
+    column.inverted && 'dark-inverted',
+    !column.inverted && (column.bold ? 'dark-text' : 'light-text'),
+  ]" :title="row.AddressLine1">
               {{ row.addressLine1 }}, {{ row.addressLine2 }}
             </span>
           </template>
+
           <template v-if="column.key === 'actions'">
             <VButton @click="openViewProjectModal(row)"> View</VButton>
             <VButton @click="openAcceptProjectModal(row.id)" color="primary" style="margin-left: 10px">

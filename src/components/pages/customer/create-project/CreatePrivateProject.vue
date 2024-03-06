@@ -1,4 +1,5 @@
 <template>
+
   <div v-if="isError" class="error-container">
     <div class="error-wrapper">
       <div class="error-inner has-text-centered">
@@ -122,11 +123,16 @@
         <div v-for="item in users" :key="item.id" class="column is-3">
           <div class="grid-item">
             <VAvatar :picture="item.profilePicture === null
-                ? '/@src/assets/image/profile.png'
-                : basic_url + '/api/uploads/profile_picture/' + item.profilePicture
-              " :badge="item.badge" size="big" />
+    ? '/src/assets/image/profile.png'
+    : basic_url + '/api/uploads/profile_picture/' + item.profilePicture
+    " :badge="item.badge" size="big" />
             <h3 class="dark-inverted">{{ item.name }}</h3>
             <p>Contractor</p>
+            <br />
+            <div style="display: flex; align-items: center; justify-content: center; margin-top: 1.5vh;">
+              <VueStarRating v-model:rating="contractorRatings[item.id]" :increment="0.1" :read-only="true"
+                :show-rating="true" :star-size="15" />
+            </div>
             <br />
             <button class="button v-button is-dark-outlined" @click="contractorSelect(item.id)">
               <span class="icon">
@@ -162,7 +168,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { abilityService } from '/@src/service/ability-service'
 import { skillService } from '/@src/service/skill-service'
@@ -171,6 +177,8 @@ import { useRouter } from 'vue-router'
 import { userService } from '/@src/service/user-service'
 import { basic_url } from '/@src/utils/basic_config'
 import { useStorage } from '@vueuse/core'
+//@ts-ignore
+import VueStarRating from 'vue-star-rating'
 
 const notif = useNotyf()
 const router = useRouter()
@@ -180,6 +188,7 @@ let user: any = useStorage('user', [])
 const filters = ref('')
 const isDataLoading = ref(true)
 const isError = ref(false)
+const contractorRatings = ref({})
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
@@ -345,6 +354,26 @@ const filterContractors = async () => {
   }
 }
 
+
+const getRating = async (contractorId: any) => {
+  const response = await userService.getContractorRating(contractorId)
+
+  if (response.data.status === "SUCCESS") {
+    return response.data.results
+  } else {
+    return 0.00
+  }
+}
+
+
+const fetchRatings = async () => {
+  if (users.value.length !== 0) {
+    for (let i = 0; i < users.value.length; i++) {
+      contractorRatings.value[users.value[i].id] = await getRating(users.value[i].id);
+    }
+  }
+};
+
 onMounted(async () => {
   await fetchAbilities()
   await fetchSkills()
@@ -377,6 +406,9 @@ onMounted(async () => {
     isDataLoading.value = false
     notif.error(contractors_state.state.error)
   }
+
+  await fetchRatings()
+
 })
 
 const contractorSelect = async (contractor_id: any) => {

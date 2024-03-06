@@ -15,7 +15,7 @@ const position = ref<string>(user.value.role)
 
 const profile_image = ref<string>(
   user.value.profilePicture === null
-    ? '/@src/assets/image/profile.png'
+    ? '/src/assets/image/profile.png'
     : basic_url + '/api/uploads/profile_picture/' + user.value.profilePicture
 )
 

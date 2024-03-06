@@ -911,6 +911,30 @@ class ProjectService {
     return state
   }
 
+  async ratingContractor(rating: any) {
+    const state: ApiResponse = {
+      status: 0,
+      data: [],
+      isLoading: true,
+      error: null,
+    }
+
+    try {
+      const result = await apiInstance.post('/v1/user/rating', rating, {
+        headers: {
+          Authorization: authHeader(),
+        },
+      })
+      state.status = result.status
+      state.data = result.data
+      state.isLoading = false
+    } catch (e: any) {
+      state.error = e.message
+      state.isLoading = false
+    }
+    return state
+  }
+
   async getAllAcceptedProjectsByContractorId(id: any) {
     const state: ApiResponse = {
       data: [],
@@ -933,6 +957,38 @@ class ProjectService {
       state.isLoading = false
     }
     return state
+  }
+
+  async getContractorRating(params: any) {
+    const state: ApiResponse = {
+      data: [],
+      isLoading: true,
+      error: null,
+      status: 0,
+    }
+    try {
+      var searchParams = new URLSearchParams()
+      searchParams.append('projectId', params.projectId)
+
+      const result = await apiInstance.get('/v1/user/rating?' + searchParams.toString(), {
+        headers: {
+          Authorization: authHeader(),
+        },
+      })
+      if (result.status === 200) {
+        state.status = result.status
+        state.data = result.data
+        state.isLoading = false
+      } else {
+        state.error = 'Something went wrong!'
+        state.isLoading = false
+      }
+      state.isLoading = false
+    } catch (e: any) {
+      state.error = e.message
+      state.isLoading = false
+    }
+    return { state }
   }
 }
 

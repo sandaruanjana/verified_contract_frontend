@@ -4,6 +4,60 @@
             :bodyData="bodyData" />
     </div>
 
+    <div v-if="is_contractor_prfile_open">
+        <ContractorProfileModal :isOpen="is_contractor_prfile_open" @exit="is_contractor_prfile_open = false"
+            :contractor_id="contractor_id_for_view_profile" />
+    </div>
+
+    <div v-if="openContractorRateModalOpen">
+        <VModal :open="openContractorRateModalOpen" size="large" actions="center"
+            @close="openContractorRateModalOpen = false" title="Contractor">
+            <template #content>
+
+
+                <VCardAction :avatar="contractor_profile_image" :title="contractor.name" subtitle="Contractor">
+                    <template #action>
+                        <VButton @click="
+                    ; (is_contractor_prfile_open = true), (contractor_id_for_view_profile = contractor.id)
+        " color="primary" raised>View Profile</VButton>
+                    </template>
+                    <p>
+                    <ul>
+                        <li>Email: {{ contractor.email }}</li>
+                        <li>Phone: {{ contractor.telephone }}</li>
+                    </ul>
+                    </p>
+                </VCardAction>
+
+                <h3 class="title is-4 is-narrow is-thin" style=" margin-top: 2.5vh; ">Feedback</h3>
+
+                <VueStarRating @update:rating="ratingContractor" v-model:rating="rating" :increment="0.1"
+                    :read-only="false" :show-rating="true" :star-size="30" style=" margin-top: 1.5vh; " />
+
+                <div class="field" style=" margin-top: 2.5vh; ">
+                    <label>Comment</label>
+                    <div class="control">
+                        <VField>
+                            <VControl>
+                                <textarea v-model="comment" style=" margin-top: 1.0vh; " class="textarea" rows="4"
+                                    placeholder="Your comment..."> </textarea>
+                            </VControl>
+                        </VField>
+
+                    </div>
+                </div>
+
+            </template>
+
+            <template #action>
+                <VButton @click="ratingContractor" color="primary" raised>
+                    Save Changes
+                </VButton>
+            </template>
+        </VModal>
+    </div>
+
+
     <AllContractorsBidModal :isOpen="is_project_has_proposal" @exit="bidModalExit" :proposal_id="selected_proposal_id"
         @project_win="; (is_project_has_proposal = false), (render = true)" />
 
@@ -14,6 +68,7 @@
         Here we retrieve the internal wrapperState.
         Note that we can not destructure it
       -->
+
         <template #default="wrapperState">
             <!--Table Pagination-->
             <VFlexPagination v-model:current-page="wrapperState.page" :item-per-page="wrapperState.limit"
@@ -50,6 +105,7 @@
             </VFlexPagination>
 
             <VFlexTable rounded clickable>
+
                 <template #body>
                     <!--
               The wrapperState.loading will be update
@@ -96,21 +152,23 @@
                 </template>
 
                 <!-- This is the body cell slot -->
+
                 <template #body-cell="{ row, column }">
                     <template v-if="column.key === 'address'">
                         <span :class="[
-                            column.cellClass,
-                            column.inverted && 'dark-inverted',
-                            !column.inverted && (column.bold ? 'dark-text' : 'light-text'),
-                        ]" :title="row.AddressLine1">
+        column.cellClass,
+        column.inverted && 'dark-inverted',
+        !column.inverted && (column.bold ? 'dark-text' : 'light-text'),
+    ]" :title="row.AddressLine1">
                             {{ row.addressLine1 }}, {{ row.addressLine2 }}
                         </span>
                     </template>
+
                     <template v-if="column.key === 'actions'">
                         <VButton color="primary" @click="viewProposal(row)"> View </VButton>
-                        <!-- <VButton color="danger" @click="openDeleteConfirmationModal(row.id)" style="margin-left: 15px">
-                            DELETE
-                        </VButton> -->
+                        <VButton color="warning" @click="openContractorRateModal(row)" style="margin-left: 15px">
+                            Feedback
+                        </VButton>
                     </template>
 
                     <template v-if="column.key === 'actions'">
@@ -128,12 +186,14 @@
 
     <VModal :open="deleteConfirmationModalOpen" title="Confirmation" size="small" actions="center"
         @close="handleDeleteConfirmationModalClose">
+
         <template #content>
             <div class="has-text-centered">
                 <i class="iconify" style="font-size: 60px" data-icon="feather:alert-circle"></i>
             </div>
             <VPlaceholderSection title="Are you sure you want to delete?" subtitle="This action cannot be undone." />
         </template>
+
         <template #action>
             <VButton color="danger" raised @click="confirmDeleteProposal" :loading="isLoadingDeleteProposal">
                 Yes, Delete!
@@ -141,15 +201,21 @@
         </template>
     </VModal>
 </template>
-  
+
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core'
-import { computed, h, onMounted, reactive, ref } from 'vue'
+import { computed, h, onMounted, reactive, ref, watch } from 'vue'
 import type { VFlexTableWrapperDataResolver } from '/@src/components/base/table/VFlexTableWrapper.vue'
 import { useNotyf } from '/@src/composable/useNotyf'
 import { projectService } from '/@src/service/project-service'
 import sleep from '/@src/utils/sleep'
 import VTag from '/@src/components/base/tags/VTag.vue'
+//@ts-ignore
+import VueStarRating from 'vue-star-rating'
+import ApiResponse from '/@src/utils/api-response-interface'
+import { userService } from '/@src/service/user-service'
+import { basic_url } from '/@src/utils/basic_config'
+
 
 const notif = useNotyf()
 
@@ -170,7 +236,40 @@ const projectId = ref('')
 const bodyData = ref<Object>()
 
 const deleteConfirmationModalOpen = ref(false);
+const openContractorRateModalOpen = ref(false);
+
 const isLoadingDeleteProposal = ref(false);
+
+let feedback = ref<ApiResponse>()
+// const rating = ref()
+const rates = ref([] as any)
+const rating = ref<number>(1);
+const is_feedback_loading = ref(true)
+const contractor = ref<any>()
+const is_contractor_loading = ref(true)
+const is_contractor_error = ref(false)
+const comment = ref("")
+
+const is_contractor_prfile_open = ref(false)
+const contractor_id_for_view_profile = ref('')
+
+const contractor_profile_image = ref<string>(
+    user.value.profilePicture === null
+        ? '/@src/assets/image/profile.png'
+        : basic_url + '/api/uploads/profile_picture/' + contractor.value.profilePicture
+)
+
+
+const openContractorRateModal = (row: any) => {
+    contractor.value = "";
+    selected_proposal_id.value = "";
+    comment.value = "";
+    rating.value = 0
+    selected_proposal_id.value = row.id;
+    fetchContractor(row.assignUserId)
+    getContractorRating();
+    openContractorRateModalOpen.value = true
+};
 
 const openDeleteConfirmationModal = (proposal_id: any) => {
     selected_proposal_id.value = proposal_id;
@@ -329,27 +428,54 @@ const fetchData: VFlexTableWrapperDataResolver = async ({
 }
 
 const viewProposal = async (row: any) => {
-
     projectId.value = row.id
     bodyData.value = row
     viewProjectActionOpen.value = true
-
-    // selected_proposal_id.value = proposal_id
-    // is_project_has_proposal.value = true
 }
 
-// const deleteProposal = async (proposal_id: any) => {
-//   var response = await projectService.deleteProjectById(proposal_id)
+const getContractorRating = async () => {
 
-//   if (response.data.results === true) {
-//     notif.success("Project Deleted Successfully")
-//     render.value = true
-//   } else {
-//     notif.error("Project Deletion Failed")
-//     render.value = true
-//   }
+    const json = {
+        projectId: selected_proposal_id.value,
+    }
 
-// }
+    var response = await projectService.getContractorRating(json)
+    if (response.state.data.status === "SUCCESS") {
+        rating.value = response.state.data.results.rate
+        comment.value = response.state.data.results.comment
+    } else if (response.state.data.results === null) {
+        notif.warning("Please rate contractor")
+    } else {
+        notif.error("Get Contractor Rating Failed")
+    }
+
+}
+
+const ratingContractor = async (new_rate: any) => {
+    const json = {
+        projectId: selected_proposal_id.value,
+        revieweeUserId: contractor.value.id,
+        rate: new_rate.isTrusted === true ? rating.value : new_rate,
+        comment: comment.value,
+    }
+
+    var response = await projectService.ratingContractor(json)
+
+    if (response.data.status === "SUCCESS") {
+
+        if (new_rate.isTrusted === true) {
+            notif.success("Feedback Submitted Successfully")
+            openContractorRateModalOpen.value = false
+        } else {
+            notif.success("Rating Added Successfully")
+
+        }
+
+    } else {
+        notif.error("Rating Added Failed")
+    }
+
+}
 
 const confirmDeleteProposal = async () => {
     deleteConfirmationModalOpen.value = false;
@@ -372,8 +498,23 @@ const confirmDeleteProposal = async () => {
 const bidModalExit = async () => {
     is_project_has_proposal.value = false
 }
+
+
+const fetchContractor = async (contractor_id: any) => {
+    const contractor_state = await userService.getById(contractor_id)
+    if (contractor_state.data.status == 'SUCCESS') {
+        contractor.value = contractor_state.data.results
+        is_contractor_loading.value = false
+    } else {
+        is_contractor_error.value = true
+        is_contractor_loading.value = false
+        notif.error('Something went wrong!')
+    }
+}
+
+
 </script>
-  
+
 <style lang="scss">
 .flex-table-cell {
     flex: 1 1 0;

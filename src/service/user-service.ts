@@ -334,6 +334,37 @@ class UserService {
     }
     return state
   }
+
+  async getContractorRating(id: any) {
+    const state: ApiResponse = {
+      status: 0,
+      data: [],
+      isLoading: true,
+      error: null,
+    }
+    try {
+      const result = await apiInstance.get('/v1/user/rating/average/' + id, {
+        headers: {
+          Authorization: authHeader(),
+        },
+      })
+      if (result.status === 200) {
+        state.status = result.status
+        state.data = result.data
+        state.isLoading = false
+      } else {
+        state.error = 'Something went wrong!'
+        state.isLoading = false
+      }
+      state.isLoading = false
+    } catch (e: any) {
+      state.error = e.message
+      state.isLoading = false
+    }
+    return state
+  }
+
+
 }
 
 export const userService = new UserService()

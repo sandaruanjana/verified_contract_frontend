@@ -41,6 +41,10 @@
                   </p>
                   <p>Phone Number : {{ contractor.telephone }}</p>
                   <p>Email : {{ contractor.email }}</p>
+                  <div>
+                    <VueStarRating v-model:rating="rating" :increment="0.1" :read-only="true" :show-rating="true"
+                      :star-size="15" />
+                  </div>
                 </div>
                 <div class="meta-right">
                   <div class="tags">
@@ -263,8 +267,18 @@ const fetchFeedback = async () => {
   }
 }
 
+const getRating = async (contractorId: any) => {
+  const response = await userService.getContractorRating(contractorId)
+
+  if (response.data.status === "SUCCESS") {
+    rating.value = response.data.results
+  } else {
+    rating.value = 0.00
+  }
+}
+
 onMounted(async () => {
-  await Promise.all([fetchContractor(), fetchGallery()])
+  await Promise.all([fetchContractor(), fetchGallery(), getRating(contractor_id.value)])
 })
 
 const close = () => {
