@@ -11,6 +11,10 @@
             <td>Preferred Date:</td>
             <td>{{ bodyData.preferredDate }}</td>
           </tr>
+          <tr v-if="bodyData.assignUserId !== null && bodyData.bidAmount !== 0">
+            <td>Project Value:</td>
+            <td>$ {{ bodyData.bidAmount }}</td>
+          </tr>
           <tr>
             <td>Address Line 1:</td>
             <td>{{ bodyData.addressLine1 }}</td>

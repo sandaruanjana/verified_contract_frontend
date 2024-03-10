@@ -225,6 +225,21 @@
                   </V-Field>
                 </div>
               </div> -->
+
+              <div class="column is-12">
+                <Field v-slot="{ field, errorMessage }" name="project_value">
+                  <V-Field>
+                    <label>Project Value</label>
+                    <V-Control icon="bx:dollar" :has-error="Boolean(errorMessage)">
+                      <input v-bind="field" type="number" class="input" placeholder="" autocomplete="off" />
+                      <p v-if="errorMessage" class="help is-danger">
+                        {{ errorMessage }}
+                      </p>
+                    </V-Control>
+                  </V-Field>
+                </Field>
+              </div>
+
               <div class="column is-12">
                 <Field v-slot="{ field, errorMessage }" name="project_description">
                   <V-Field>
@@ -338,6 +353,7 @@ const userSession = useUserSession()
 
 const notif = useNotyf()
 const contractor_id = ref<any>()
+const project_value = ref<any>()
 
 if (!Boolean(router.currentRoute.value.params.id)) {
   router.push({
@@ -447,6 +463,7 @@ const schema = yup.object({
     .required('Please enter a zip code')
     .matches(/^\d{5}$/, 'Please enter a valid zip code'),
   // category: yup.string().required('Please enter a category'),
+  project_value: yup.string().required('Please enter a project value'),
 })
 
 const { resetForm, handleSubmit } = useForm({
@@ -538,6 +555,7 @@ const handleCreateProject = handleSubmit(async (data: any) => {
       longitude: zipCodeLongitude,
       latitude: zipCodeLatitude,
       category: selectedCategory.value,
+      bidAmount: data.project_value,
       categoryOneId:
         selectedServiceHomeRemodels.value.length === 0
           ? null

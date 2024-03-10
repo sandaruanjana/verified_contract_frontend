@@ -1,7 +1,7 @@
 <template>
   <div class="auth-wrapper-inner columns is-gapless">
     <!-- Image section (hidden on mobile) -->
-    <div class="column login-column is-8 h-hidden-mobile h-hidden-tablet-p hero-banner">
+    <!-- <div class="column login-column is-8 h-hidden-mobile h-hidden-tablet-p hero-banner">
       <div class="hero login-hero is-fullheight is-app-grey">
         <div class="hero-body">
           <div class="columns">
@@ -23,31 +23,43 @@
           <p class="has-text-centered"></p>
         </div>
       </div>
+    </div> -->
+
+
+    <div class="column login-column is-8 h-hidden-mobile h-hidden-tablet-p hero-banner">
+
+      <video autoplay muted loop class="background-video">
+        <source src="/src/assets/login.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <div class="hero login-hero is-app-grey">
+        <div class="hero-body">
+          <div class="columns">
+            <div class="column is-10 is-offset-1">
+              <!-- <img class="light-image has-light-shadow has-light-border" src="/@src/assets/images/building3.jpeg" alt=""> -->
+              <!-- <img class="dark-image has-light-shadow" src="/@src/assets/images/building3.jpeg" alt=""> -->
+            </div>
+          </div>
+        </div>
+        <div class="hero-footer">
+          <p class="has-text-centered" />
+        </div>
+      </div>
     </div>
 
     <!-- Form section -->
-    <div class="column is-4">
+    <div class="column is-4" style="z-index: 999;">
       <div class="hero is-fullheight is-white">
         <div class="hero-heading">
-          <label
-            class="dark-mode ml-auto"
-            tabindex="0"
-            @keydown.space.prevent="(e) => (e.target as HTMLLabelElement).click()"
-          >
-            <input
-              type="checkbox"
-              :checked="!darkmode.isDark"
-              @change="darkmode.onChange"
-            />
+          <label class="dark-mode ml-auto" tabindex="0"
+            @keydown.space.prevent="(e) => (e.target as HTMLLabelElement).click()">
+            <input type="checkbox" :checked="!darkmode.isDark" @change="darkmode.onChange" />
             <span></span>
           </label>
           <div class="auth-logo">
             <RouterLink :to="{ name: 'auth-login' }">
-              <img
-                style="width: 167px; height: 100px"
-                src="/@src/assets/logo/HomeAdvisor-1024x275.jpg"
-                alt=""
-              />
+              <img style="width: 167px; height: 100px" src="/@src/assets/logo/HomeAdvisor-1024x275.jpg" alt="" />
               <!-- <AnimatedLogo width="36px" height="36px" /> -->
             </RouterLink>
           </div>
@@ -70,39 +82,21 @@
                       <!-- Email -->
                       <VField>
                         <VControl icon="feather:user">
-                          <input
-                            v-model="email"
-                            class="input"
-                            type="text"
-                            placeholder="Email"
-                            autocomplete="email"
-                          />
+                          <input v-model="email" class="input" type="text" placeholder="Email" autocomplete="email" />
                         </VControl>
                       </VField>
 
                       <!-- Password -->
                       <VField>
                         <VControl icon="feather:lock">
-                          <input
-                            v-model="password"
-                            class="input"
-                            type="password"
-                            placeholder="Password"
-                            autocomplete="current-password"
-                          />
+                          <input v-model="password" class="input" type="password" placeholder="Password"
+                            autocomplete="current-password" />
                         </VControl>
                       </VField>
 
                       <!-- Submit -->
                       <VControl class="login">
-                        <VButton
-                          :loading="isLoading"
-                          color="primary"
-                          type="submit"
-                          bold
-                          fullwidth
-                          raised
-                        >
+                        <VButton :loading="isLoading" color="primary" type="submit" bold fullwidth raised>
                           Sign In
                         </VButton>
                       </VControl>
@@ -207,3 +201,17 @@ useHead({
   title: 'Login - Verified Contracting',
 })
 </script>
+
+<style lang="scss" scoped>
+.background-video {
+  position: absolute;
+  height: 100%;
+}
+
+
+@media screen and (width >=769px) {
+  .background-video {
+    max-width: 140% !important;
+  }
+}
+</style>

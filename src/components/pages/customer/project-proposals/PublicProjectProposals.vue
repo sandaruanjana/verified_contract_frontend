@@ -18,7 +18,8 @@
           <VFlex class="mr-4">
             <VField>
               <VControl icon="feather:search">
-                <input v-model="wrapperState.searchInput" type="text" class="input is-rounded" placeholder="Filter..." />
+                <input v-model="wrapperState.searchInput" type="text" class="input is-rounded"
+                  placeholder="Filter..." />
               </VControl>
             </VField>
           </VFlex>
@@ -90,15 +91,17 @@
         <template #body-cell="{ row, column }">
           <template v-if="column.key === 'address'">
             <span :class="[
-              column.cellClass,
-              column.inverted && 'dark-inverted',
-              !column.inverted && (column.bold ? 'dark-text' : 'light-text'),
-            ]" :title="row.AddressLine1">
+    column.cellClass,
+    column.inverted && 'dark-inverted',
+    !column.inverted && (column.bold ? 'dark-text' : 'light-text'),
+  ]" :title="row.AddressLine1">
               {{ row.addressLine1 }}, {{ row.addressLine2 }}
             </span>
           </template>
           <template v-if="column.key === 'actions'">
-            <VButton color="primary" @click="viewProposal(row.id)"> View </VButton>
+            <VButton v-if="row.status === 'INITIATE' && row.assignUserId !== null" color="primary" disabled> View
+            </VButton>
+            <VButton v-else color="primary" @click="viewProposal(row.id)"> View </VButton>
             <VButton color="danger" @click="openDeleteConfirmationModal(row.id)" style="margin-left: 15px">
               DELETE
             </VButton>

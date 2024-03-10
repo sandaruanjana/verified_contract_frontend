@@ -19,7 +19,7 @@ const tab = ref(props.activeTab)
         <div class="tabs">
           <ul>
             <li :class="[tab === 'private' && 'is-active']">
-              <a tabindex="0" @keydown.space.prevent="tab = 'private'" @click="tab = 'private'"><span>Private</span></a>
+              <a tabindex="0" @keydown.space.prevent="tab = 'private'" @click="tab = 'private'"><span>Reject</span></a>
             </li>
             <li :class="[tab === 'public' && 'is-active']" style="margin-right: 10px;">
               <a tabindex="0" @keydown.space.prevent="tab = 'public'" @click="tab = 'public'"><span>Public</span></a>

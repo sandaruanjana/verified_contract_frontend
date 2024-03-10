@@ -216,6 +216,8 @@ const page = ref(1)
 const limit = ref(20)
 const total = ref<any>(null)
 
+const project_value = ref<any>();
+
 const handleScroll = async () => {
   if (isDataLoading.value === false) {
     let element = document.querySelector('.user-grid-v1')
